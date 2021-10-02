@@ -8,5 +8,21 @@
         android:id="@+id/registrationFragment"
         android:name="me.isachenko.shiftlabtest.RegistrationFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" />
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_greetingsFragment"
+            app:destination="@id/greetingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/greetingsFragment"
+        android:name="me.isachenko.shiftlabtest.GreetingsFragment"
+        android:label="fragment_greetings"
+        tools:layout="@layout/fragment_greetings" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="surname"
+            app:argType="string" />
+    </fragment>
 </navigation>

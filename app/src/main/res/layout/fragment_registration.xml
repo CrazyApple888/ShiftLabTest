@@ -63,7 +63,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/date_picker"
+            android:id="@+id/date_of_birth"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
@@ -75,7 +75,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/date_of_birth_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:focusable="false">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -89,8 +90,8 @@
             android:layout_marginTop="5dp"
             android:hint="@string/hint_password"
             app:endIconMode="password_toggle"
-            app:layout_constraintStart_toStartOf="@id/date_picker"
-            app:layout_constraintTop_toBottomOf="@+id/date_picker">
+            app:layout_constraintStart_toStartOf="@id/date_of_birth"
+            app:layout_constraintTop_toBottomOf="@+id/date_of_birth">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_edit_text"

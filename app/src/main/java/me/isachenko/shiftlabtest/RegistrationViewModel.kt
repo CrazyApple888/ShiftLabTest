@@ -33,6 +33,11 @@ class RegistrationViewModel : ViewModel() {
         return isSurnameCorrect
     }
 
+    fun isDateOfBirthCorrect(date: String) : Boolean {
+        isDateOfBirthCorrect = date.isNotEmpty()
+        return isDateOfBirthCorrect
+    }
+
     fun isAllCorrect() =
         isNameCorrect && isSurnameCorrect && isDateOfBirthCorrect && isPasswordCorrect && isRepeatPasswordCorrect
 }

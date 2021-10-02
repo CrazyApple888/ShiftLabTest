@@ -1,5 +1,6 @@
 package me.isachenko.shiftlabtest
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,12 +9,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import me.isachenko.shiftlabtest.databinding.FragmentRegistrationBinding
+import java.util.*
 
-class RegistrationFragment : Fragment() {
+//TODO extract strings to xml
+class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: FragmentRegistrationBinding
     private lateinit var viewModel: RegistrationViewModel
@@ -26,7 +33,6 @@ class RegistrationFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -41,36 +47,28 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initEditText()
+        setListeners()
 
-        nameEditText.setOnFocusChangeListener { view: View, hasFocus: Boolean ->
-            checkName(view, hasFocus)
+        binding.registerButton.setOnClickListener {
+            val action =
+                RegistrationFragmentDirections.actionRegistrationFragmentToGreetingsFragment(
+                    nameEditText.text.toString(), surnameEditText.text.toString()
+                )
+            view.findNavController().navigate(action)
         }
-        surnameEditText.setOnFocusChangeListener { view: View, hasFocus: Boolean ->
-            checkSurname(view, hasFocus)
-        }
-        passwordEditText.setOnFocusChangeListener { view: View, hasFocus: Boolean ->
-            checkPassword(view, hasFocus)
-        }
-        repeatPasswordEditText.setOnFocusChangeListener { view: View, hasFocus: Boolean ->
-            checkRepeatPassword(view, hasFocus)
-        }
+    }
 
-        val watcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                binding.registerButton.isEnabled = viewModel.isAllCorrect()
-                Log.i("ABOBA", viewModel.isAllCorrect().toString())
-            }
-        }
-
-        nameEditText.addTextChangedListener(watcher)
-        surnameEditText.addTextChangedListener(watcher)
-        dateOfBirthEditText.addTextChangedListener(watcher)
-        passwordEditText.addTextChangedListener(watcher)
-        repeatPasswordEditText.addTextChangedListener(watcher)
+    private fun showDatePicker() {
+        val instance = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            this.requireContext(),
+            this,
+            instance.get(Calendar.YEAR),
+            instance.get(Calendar.MONTH),
+            instance.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+        datePickerDialog.show()
     }
 
     private fun initEditText() {
@@ -81,47 +79,72 @@ class RegistrationFragment : Fragment() {
         repeatPasswordEditText = binding.repeatPasswordEditText
     }
 
-    private fun checkName(view: View, hasFocus: Boolean) {
-        (view.parent.parent as TextInputLayout).error =
-            if (viewModel.isNameCorrect((view as TextInputEditText).text.toString())) {
+    private fun setListeners() {
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                binding.registerButton.isEnabled = viewModel.isAllCorrect()
+            }
+        }
+
+        nameEditText.addTextChangedListener { checkName() }
+        surnameEditText.addTextChangedListener { checkSurname() }
+        dateOfBirthEditText.addTextChangedListener { }
+        passwordEditText.addTextChangedListener { checkPassword() }
+        repeatPasswordEditText.addTextChangedListener { checkRepeatPassword() }
+
+        nameEditText.addTextChangedListener(watcher)
+        surnameEditText.addTextChangedListener(watcher)
+        dateOfBirthEditText.addTextChangedListener(watcher)
+        passwordEditText.addTextChangedListener(watcher)
+        repeatPasswordEditText.addTextChangedListener(watcher)
+
+        dateOfBirthEditText.setOnClickListener {
+            showDatePicker()
+        }
+    }
+
+    private fun checkDate() {
+        binding.dateOfBirth.error =
+            if (viewModel.isDateOfBirthCorrect(dateOfBirthEditText.text.toString())) {
                 null
             } else {
-                if (!hasFocus) {
-                    "Only letters allowed"
-                } else {
-                    null
-                }
+                "Date incorrect"
             }
     }
 
-    private fun checkSurname(view: View, hasFocus: Boolean) {
-        (view.parent.parent as TextInputLayout).error =
-            if (viewModel.isSurnameCorrect((view as TextInputEditText).text.toString())) {
+    private fun checkName() {
+        binding.name.error =
+            if (viewModel.isNameCorrect(nameEditText.text.toString())) {
                 null
             } else {
-                if (!hasFocus) {
-                    "Only letters allowed"
-                } else {
-                    null
-                }
+                "Only letters allowed"
             }
     }
 
-    private fun checkPassword(view: View, hasFocus: Boolean) {
-        (view.parent.parent as TextInputLayout).error =
-            if (viewModel.isPasswordCorrect((view as TextInputEditText).text.toString())) {
+    private fun checkSurname() {
+        binding.surname.error =
+            if (viewModel.isSurnameCorrect(surnameEditText.text.toString())) {
                 null
             } else {
-                if (!hasFocus) {
-                    "At least 8 symbols, lower and uppercase letters and number"
-                } else {
-                    null
-                }
+                "Only letters allowed"
             }
     }
 
-    private fun checkRepeatPassword(view: View, hasFocus: Boolean) {
-        (view.parent.parent as TextInputLayout).error =
+    private fun checkPassword() {
+        binding.password.error =
+            if (viewModel.isPasswordCorrect(passwordEditText.text.toString())) {
+                null
+            } else {
+                "At least 8 symbols, lower and uppercase letters and number"
+            }
+    }
+
+    private fun checkRepeatPassword() {
+        binding.repeatPassword.error =
             if (viewModel.isRepeatPasswordCorrect(
                     passwordEditText.text.toString(),
                     repeatPasswordEditText.text.toString()
@@ -129,11 +152,30 @@ class RegistrationFragment : Fragment() {
             ) {
                 null
             } else {
-                if (!hasFocus) {
-                    "Passwords not the same"
-                } else {
-                    null
-                }
+                "Passwords are not the same"
             }
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val template = getString(R.string.date_template)
+        val dayString = if (dayOfMonth < 10) {
+            "0$dayOfMonth"
+        } else {
+            dayOfMonth.toString()
+        }
+        val monthString = if (month < 10) {
+            "0$month"
+        } else {
+            month.toString()
+        }
+        dateOfBirthEditText.setText(
+            String.format(
+                template,
+                dayString,
+                monthString,
+                year.toString()
+            )
+        )
+        checkDate()
     }
 }

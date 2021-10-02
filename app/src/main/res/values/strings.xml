@@ -8,4 +8,11 @@
     <string name="hint_register_button">Sign Up</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="register_title_text">Sign Up</string>
+    <string name="greetings_button_text">Greetings</string>
+    <string name="date_template">%2s.%2s.%4s</string>
+    <string name="preferences_key">name_surname_preferences</string>
+    <string name="saved_name_key">saved_name_key</string>
+    <string name="saved_surname_key">saved_surname_key</string>
+    <string name="default_name_key">Stranger</string>
+    <string name="default_surname_key">Mysterious</string>
 </resources>
