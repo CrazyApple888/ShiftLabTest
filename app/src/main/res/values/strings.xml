@@ -15,4 +15,10 @@
     <string name="saved_surname_key">saved_surname_key</string>
     <string name="default_name_key">Stranger</string>
     <string name="default_surname_key">Mysterious</string>
+    <string name="hello_message_template">Hello, %s %s!</string>
+    <string name="dialog_button_text">Hey!</string>
+    <string name="date_error">Date incorrect</string>
+    <string name="name_surname_error">Only letters allowed</string>
+    <string name="password_error">At least 8 symbols, lower and uppercase letters and number</string>
+    <string name="repeat_password_error">Passwords are not the same</string>
 </resources>

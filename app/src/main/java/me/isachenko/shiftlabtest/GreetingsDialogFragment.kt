@@ -7,13 +7,14 @@ import androidx.appcompat.app.AppCompatDialogFragment
 
 class GreetingsDialogFragment : AppCompatDialogFragment() {
 
-    //TODO extract strings to xml
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val name = arguments?.getString("name")
         val surname = arguments?.getString("surname")
+        val template = getString(R.string.hello_message_template)
+        val buttonText = getString(R.string.dialog_button_text)
         val alertDialog = AlertDialog.Builder(context)
-            .setMessage("Hello, $surname $name!")
-            .setPositiveButton("Hey!") { _: DialogInterface, _: Int ->
+            .setMessage(String.format(template, surname, name))
+            .setPositiveButton(buttonText) { _: DialogInterface, _: Int ->
                 dialog?.dismiss()
             }.create()
 

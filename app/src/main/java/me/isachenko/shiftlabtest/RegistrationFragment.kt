@@ -19,7 +19,6 @@ import com.google.android.material.textfield.TextInputEditText
 import me.isachenko.shiftlabtest.databinding.FragmentRegistrationBinding
 import java.util.*
 
-//TODO extract strings to xml
 class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: FragmentRegistrationBinding
@@ -30,6 +29,11 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var dateOfBirthEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
     private lateinit var repeatPasswordEditText: TextInputEditText
+
+    private lateinit var dateErrorMessage: String
+    private lateinit var nameSurnameErrorMessage: String
+    private lateinit var passwordErrorMessage: String
+    private lateinit var repeatPasswordErrorMessage: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,7 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initErrorMessages()
         initEditText()
         setListeners()
 
@@ -77,6 +82,13 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         dateOfBirthEditText = binding.dateOfBirthEditText
         passwordEditText = binding.passwordEditText
         repeatPasswordEditText = binding.repeatPasswordEditText
+    }
+
+    private fun initErrorMessages() {
+        dateErrorMessage = getString(R.string.date_error)
+        nameSurnameErrorMessage = getString(R.string.name_surname_error)
+        passwordErrorMessage = getString(R.string.password_error)
+        repeatPasswordErrorMessage = getString(R.string.repeat_password_error)
     }
 
     private fun setListeners() {
@@ -112,7 +124,7 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             if (viewModel.isDateOfBirthCorrect(dateOfBirthEditText.text.toString())) {
                 null
             } else {
-                "Date incorrect"
+                dateErrorMessage
             }
     }
 
@@ -121,7 +133,7 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             if (viewModel.isNameCorrect(nameEditText.text.toString())) {
                 null
             } else {
-                "Only letters allowed"
+                nameSurnameErrorMessage
             }
     }
 
@@ -130,7 +142,7 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             if (viewModel.isSurnameCorrect(surnameEditText.text.toString())) {
                 null
             } else {
-                "Only letters allowed"
+                nameSurnameErrorMessage
             }
     }
 
@@ -139,7 +151,7 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             if (viewModel.isPasswordCorrect(passwordEditText.text.toString())) {
                 null
             } else {
-                "At least 8 symbols, lower and uppercase letters and number"
+                passwordErrorMessage
             }
     }
 
@@ -152,7 +164,7 @@ class RegistrationFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             ) {
                 null
             } else {
-                "Passwords are not the same"
+                repeatPasswordErrorMessage
             }
     }
 

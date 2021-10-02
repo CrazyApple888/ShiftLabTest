@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import me.isachenko.shiftlabtest.databinding.FragmentGreetingsBinding
 
-//TODO make this fragment home after login
 class GreetingsFragment : Fragment() {
 
     private lateinit var binding: FragmentGreetingsBinding
