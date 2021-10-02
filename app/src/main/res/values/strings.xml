@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ShiftLabTest</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_repeat_password">Repeat password</string>
+    <string name="hint_register_button">Sign Up</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="register_title_text">Sign Up</string>
+</resources>
